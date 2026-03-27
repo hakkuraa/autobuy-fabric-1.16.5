@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"id": "autobuy",
+	"version": "${version}",
+	"name": "AutoBuy",
+	"description": "Client-side Fabric mod for Minecraft 1.16.5 that automates auction scanning and item buying by configured price filters.",
+	"authors": ["medny_byk", "yukkiraa"],
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"com.autobuy.AutoBuyMod"
+		]
+	},
+	"mixins": [
+		"autobuy.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.0",
+		"minecraft": ">=1.16.5"
+	}
+}
