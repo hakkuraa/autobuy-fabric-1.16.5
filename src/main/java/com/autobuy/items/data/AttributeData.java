@@ -1,24 +1,24 @@
 package com.autobuy.items.data;
 
-import net.minecraft.class_1320;
-import net.minecraft.class_1322;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 
 public class AttributeData {
-   private final class_1320 attribute;
+   private final EntityAttribute attribute;
    private final double value;
-   private final class_1322.class_1323 operation;
+   private final EntityAttributeModifier.Operation operation;
 
-   public AttributeData(class_1320 attribute, double value, class_1322.class_1323 operation) {
+   public AttributeData(EntityAttribute attribute, double value, EntityAttributeModifier.Operation operation) {
       this.attribute = attribute;
       this.value = value;
       this.operation = operation;
    }
 
-   public static AttributeData of(class_1320 attribute, double value, class_1322.class_1323 operation) {
+   public static AttributeData of(EntityAttribute attribute, double value, EntityAttributeModifier.Operation operation) {
       return new AttributeData(attribute, value, operation);
    }
 
-   public class_1320 getAttribute() {
+   public EntityAttribute getAttribute() {
       return this.attribute;
    }
 
@@ -26,7 +26,7 @@ public class AttributeData {
       return this.value;
    }
 
-   public class_1322.class_1323 getOperation() {
+   public EntityAttributeModifier.Operation getOperation() {
       return this.operation;
    }
 }

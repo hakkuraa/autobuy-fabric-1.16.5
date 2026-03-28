@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import net.minecraft.class_1792;
-import net.minecraft.class_1799;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class CollectItem {
    protected final String id;
    protected final String name;
-   protected final class_1792 item;
+   protected final Item item;
    protected List<String> tooltips = new ArrayList();
 
-   public CollectItem(String id, String name, class_1792 item) {
+   public CollectItem(String id, String name, Item item) {
       this.id = id;
       this.name = name;
       this.item = item;
@@ -27,7 +27,7 @@ public class CollectItem {
       return this.name;
    }
 
-   public class_1792 getItem() {
+   public Item getItem() {
       return this.item;
    }
 
@@ -36,12 +36,12 @@ public class CollectItem {
       return this;
    }
 
-   public boolean matches(class_1799 stack) {
-      if (stack.method_7909() != this.item) {
+   public boolean matches(ItemStack stack) {
+      if (stack.getItem() != this.item) {
          return false;
       } else {
          if (!this.tooltips.isEmpty()) {
-            String lore = stack.method_7969() != null ? stack.method_7969().method_10714() : "";
+            String lore = stack.getTag() != null ? stack.getTag().asString() : "";
             Iterator var3 = this.tooltips.iterator();
 
             while(var3.hasNext()) {

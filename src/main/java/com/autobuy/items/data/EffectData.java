@@ -1,27 +1,27 @@
 package com.autobuy.items.data;
 
-import net.minecraft.class_1291;
+import net.minecraft.entity.effect.StatusEffect;
 
 public class EffectData {
-   private final class_1291 effectType;
+   private final StatusEffect effectType;
    private final int duration;
    private final int amplifier;
 
-   public EffectData(class_1291 effectType, int duration, int amplifier) {
+   public EffectData(StatusEffect effectType, int duration, int amplifier) {
       this.effectType = effectType;
       this.duration = duration;
       this.amplifier = amplifier;
    }
 
-   public static EffectData of(class_1291 effectType, int seconds, int amplifier) {
+   public static EffectData of(StatusEffect effectType, int seconds, int amplifier) {
       return new EffectData(effectType, seconds * 20, amplifier);
    }
 
-   public static EffectData instant(class_1291 effectType, int amplifier) {
+   public static EffectData instant(StatusEffect effectType, int amplifier) {
       return new EffectData(effectType, 1, amplifier);
    }
 
-   public class_1291 getEffectType() {
+   public StatusEffect getEffectType() {
       return this.effectType;
    }
 

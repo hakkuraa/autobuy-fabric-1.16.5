@@ -1,21 +1,21 @@
 package com.autobuy.items.data;
 
-import net.minecraft.class_1887;
+import net.minecraft.enchantment.Enchantment;
 
 public class EnchantmentData {
-   private final class_1887 enchantment;
+   private final Enchantment enchantment;
    private final int level;
 
-   public EnchantmentData(class_1887 enchantment, int level) {
+   public EnchantmentData(Enchantment enchantment, int level) {
       this.enchantment = enchantment;
       this.level = level;
    }
 
-   public static EnchantmentData of(class_1887 enchantment, int level) {
+   public static EnchantmentData of(Enchantment enchantment, int level) {
       return new EnchantmentData(enchantment, level);
    }
 
-   public class_1887 getEnchantment() {
+   public Enchantment getEnchantment() {
       return this.enchantment;
    }
 

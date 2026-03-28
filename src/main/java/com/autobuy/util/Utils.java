@@ -2,24 +2,24 @@ package com.autobuy.util;
 
 import java.util.Iterator;
 import java.util.List;
-import net.minecraft.class_1799;
-import net.minecraft.class_1836;
-import net.minecraft.class_2561;
-import net.minecraft.class_310;
+import net.minecraft.item.ItemStack;
+import net.minecraft.client.item.TooltipContext;
+import net.minecraft.text.Text;
+import net.minecraft.client.MinecraftClient;
 
 public final class Utils {
-   private static final class_310 mc = class_310.method_1551();
+   private static final MinecraftClient mc = MinecraftClient.getInstance();
 
-   public static String getSeller(class_1799 stack) {
-      if (mc.field_1724 == null) {
+   public static String getSeller(ItemStack stack) {
+      if (mc.player == null) {
          return "";
       } else {
          try {
-            List<class_2561> itemTooltip = stack.method_7950(mc.field_1724, (class_1836)null);
+            List<Text> itemTooltip = stack.getTooltip(mc.player, (TooltipContext)null);
             Iterator var2 = itemTooltip.iterator();
 
             while(var2.hasNext()) {
-               class_2561 line = (class_2561)var2.next();
+               Text line = (Text)var2.next();
                String lineStr = line.getString();
                if (lineStr.contains("☤ Продавец:")) {
                   return lineStr.replace("☤ Продавец: ", "").replaceAll("\\$", "").replaceAll(" ", "");
@@ -32,12 +32,12 @@ public final class Utils {
       }
    }
 
-   public static int getPrice(class_1799 stack) {
-      if (mc.field_1724 == null) {
+   public static int getPrice(ItemStack stack) {
+      if (mc.player == null) {
          return -1;
       } else {
          try {
-            List<class_2561> itemTooltip = stack.method_7950(mc.field_1724, (class_1836)null);
+            List<Text> itemTooltip = stack.getTooltip(mc.player, (TooltipContext)null);
             Iterator var2 = itemTooltip.iterator();
 
             while(true) {
@@ -48,7 +48,7 @@ public final class Utils {
                         return -1;
                      }
 
-                     class_2561 line = (class_2561)var2.next();
+                     Text line = (Text)var2.next();
                      lineStr = line.getString();
                      if (lineStr.contains("$ Цена $") || lineStr.contains("$ Цена: $")) {
                         String priceStr = lineStr.replace("$ Цена $", "").replace("$ Цена: $", "").replaceAll("\\$", "").replaceAll(" ", "").replaceAll(",", "");
