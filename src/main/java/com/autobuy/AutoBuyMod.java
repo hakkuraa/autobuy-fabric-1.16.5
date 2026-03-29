@@ -4,50 +4,53 @@ import com.autobuy.config.AutoBuyConfig;
 import com.autobuy.gui.AutoBuyScreen;
 import com.autobuy.util.DebugLogger;
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.util.Formatting;
-import net.minecraft.text.Style;
-import net.minecraft.text.LiteralText;
-import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.ClickEvent;
-import net.minecraft.client.util.InputUtil.Type;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Style;
+import net.minecraft.util.Formatting;
+import org.lwjgl.glfw.GLFW;
 
 public class AutoBuyMod implements ClientModInitializer {
-   private static final long MAIN_LOOP_DELAY_MS = 10L;
    public static final AutoBuyConfig CONFIG = new AutoBuyConfig();
    public static boolean autoBuyEnabled = false;
    public static KeyBinding menuKey;
    private static final long CREDIT_MESSAGE_INTERVAL_MS = 1800000L;
    private static final String CREDIT_URL = "https://funpay.com/users/12524555/";
    private static long lastCreditMessageTime;
+   private static boolean menuKeyWasDown;
 
    public void onInitializeClient() {
-      menuKey = new KeyBinding("key.autobuy.menu", Type.KEYSYM, 77, "AutoBuy");
+      menuKey = new KeyBinding("key.autobuy.menu", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, "AutoBuy");
       lastCreditMessageTime = System.currentTimeMillis();
       DebugLogger.log("AutoBuy initialized. Debug log path: mods/debug/debug.txt");
-      (new Thread(() -> {
-         while(true) {
-            try {
-               Thread.sleep(MAIN_LOOP_DELAY_MS);
-               MinecraftClient client = MinecraftClient.getInstance();
-               if (menuKey.wasPressed()) {
-                  client.execute(() -> {
-                     if (client.currentScreen == null) {
-                        client.openScreen(new AutoBuyScreen());
-                     }
+   }
 
-                  });
-               }
-
-               if (System.currentTimeMillis() - lastCreditMessageTime >= CREDIT_MESSAGE_INTERVAL_MS) {
-                  lastCreditMessageTime = System.currentTimeMillis();
-                  client.execute(AutoBuyMod::showCreditMessage);
-               }
-            } catch (Exception var2) {
-               DebugLogger.logException("AutoBuy main thread loop error", var2);
-            }
+   public static void onClientTick(MinecraftClient client) {
+      try {
+         if (client == null || client.getWindow() == null) {
+            return;
          }
-      })).start();
+
+         boolean menuKeyDown = InputUtil.isKeyPressed(client.getWindow().getHandle(), GLFW.GLFW_KEY_M);
+         if (menuKeyDown && !menuKeyWasDown && client.currentScreen == null) {
+            client.openScreen(new AutoBuyScreen());
+         }
+
+         menuKeyWasDown = menuKeyDown;
+         if (System.currentTimeMillis() - lastCreditMessageTime >= CREDIT_MESSAGE_INTERVAL_MS) {
+            lastCreditMessageTime = System.currentTimeMillis();
+            showCreditMessage();
+         }
+
+         if (autoBuyEnabled) {
+            AutoBuyLogic.tick(client);
+         }
+      } catch (Exception var2) {
+         DebugLogger.logException("AutoBuy client tick error", var2);
+      }
    }
 
    private static void showCreditMessage() {

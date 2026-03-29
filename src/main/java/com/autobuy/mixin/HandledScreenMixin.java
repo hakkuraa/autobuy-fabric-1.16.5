@@ -1,7 +1,6 @@
 package com.autobuy.mixin;
 
 import com.autobuy.AuctionHistoryOverlay;
-import com.autobuy.AutoBuyLogic;
 import com.autobuy.AutoBuyMod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
@@ -56,9 +55,6 @@ public abstract class HandledScreenMixin {
          DrawableHelper.fill(matrices, btnX + btnW - 1, btnY, btnX + btnW, btnY + btnH, borderColor);
          String label = "AutoBuy " + (AutoBuyMod.autoBuyEnabled ? "✔ ON" : "✘ OFF");
          MinecraftClient.getInstance().textRenderer.draw(matrices, label, (float)(btnX + 4), (float)(btnY + 3), textColor);
-         if (AutoBuyMod.autoBuyEnabled) {
-            AutoBuyLogic.tick(MinecraftClient.getInstance());
-         }
       }
 
    }
